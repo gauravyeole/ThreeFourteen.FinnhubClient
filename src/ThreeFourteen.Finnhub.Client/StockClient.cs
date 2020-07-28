@@ -95,6 +95,37 @@ namespace ThreeFourteen.Finnhub.Client
                 new Field(FieldKeys.Symbol, symbol));
         }
 
+        public async Task<NewsEntry[]> GetCompanyNews(string symbol, DateTime fromDate, DateTime toDate)
+        {
+            if (string.IsNullOrWhiteSpace(symbol)) throw new ArgumentException(nameof(symbol));
+            if (fromDate == null || toDate == null) throw new ArgumentNullException();
+
+            var from = fromDate.ToString("yyyy-MM-dd");
+            var to = toDate.ToString("yyyy-MM-dd");
+
+            return await _finnhubClient.SendAsync<NewsEntry[]>("/company-news", JsonDeserialiser.Default,
+                new Field(FieldKeys.Symbol, symbol),
+                new Field(FieldKeys.From, from),
+                new Field(FieldKeys.To, to));
+        }
+
+        public async Task<NewsSentiment> GetNewsSentiment(string symbol)
+        {
+            if (string.IsNullOrWhiteSpace(symbol)) throw new ArgumentException(nameof(symbol));
+
+            return await _finnhubClient.SendAsync<NewsSentiment>("news-sentiment", JsonDeserialiser.Default,
+                new Field(FieldKeys.Symbol, symbol));
+        }
+
+        public async Task<BasicFinancials> GetBasicFinancials(string symbol, MetricType metricType)
+        {
+            if (string.IsNullOrWhiteSpace(symbol)) throw new ArgumentException(nameof(symbol));
+
+            return await _finnhubClient.SendAsync<BasicFinancials>("stock/metric", JsonDeserialiser.Default,
+                new Field(FieldKeys.Symbol, symbol),
+                new Field(FieldKeys.Metric, metricType.ToString()));
+        }
+
         public async Task<Candle[]> GetCandles(string symbol, Resolution resolution, int count)
         {
             if (string.IsNullOrWhiteSpace(symbol)) throw new ArgumentException(nameof(symbol));

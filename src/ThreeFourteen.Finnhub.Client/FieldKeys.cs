@@ -12,5 +12,6 @@
         public const string MinId = "minId";
         public const string Isin = "isin";
         public const string Cusip = "cusip";
+        public const string Metric = "metric";
     }
 }

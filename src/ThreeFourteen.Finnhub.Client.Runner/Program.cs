@@ -37,13 +37,22 @@ namespace ThreeFourteen.Finnhub.Client.Runner
             Console.WriteLine($"Success: Retrieved company {company.Name}.");
 
             var company2 = await client.Stock.GetCompanyByIsin("US0378331005"); // AAPL
-            Console.WriteLine($"Success: Retrieved company {company.Name}.");
+            Console.WriteLine($"Success: Retrieved company {company2.Name}.");
 
             var company3 = await client.Stock.GetCompanyByCusip("037833100"); // AAPL
-            Console.WriteLine($"Success: Retrieved company {company.Name}.");
+            Console.WriteLine($"Success: Retrieved company {company3.Name}.");
 
             var compensation = await client.Stock.GetCompensation("AAPL");
             Console.WriteLine($"Success: Retrieved compensation for {compensation.Name} ({compensation.CompanyName}).");
+
+            var basicFinancials = await client.Stock.GetBasicFinancials("MSFT", MetricType.all);
+            Console.WriteLine($"Success: Retrieved {basicFinancials.Symbol} company news sentiments.");
+
+            var newsSentiment = await client.Stock.GetNewsSentiment("MSFT");
+            Console.WriteLine($"Success: Retrieved {newsSentiment.Symbol} company news sentiments.");
+
+            var companyNews = await client.Stock.GetCompanyNews("AAPL", DateTime.UtcNow.Subtract(new TimeSpan(24, 0, 0)), DateTime.UtcNow);
+            Console.WriteLine($"Success: Retrieved {companyNews.Length} company news.");
 
             var recommendations = await client.Stock.GetRecommendationTrends("AAPL");
             Console.WriteLine($"Success: Retrieved {recommendations.Length} recommendations.");
